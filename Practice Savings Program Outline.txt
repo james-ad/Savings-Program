@@ -1,0 +1,19 @@
+Steps for the Program
+
+1. Take a number.
+
+2. Subtract 10% from that number.
+
+	a. Create a function and name it payCheck
+	b. Create parameters for the function called amount
+	c. Multiply amount times .10
+	d. Return the result
+
+
+3. Add the 10% from each number.
+
+4. As the user changes the percentage slider value, update the percentage of money that is being saved
+
+	a. Create a div to show the amount of money being saved relative to a particular percentage of the paycheck
+	b. First, get the readout to show how much money is being saved from one check deposit.
+	c. Second, figure out how to update that value to reflect the changing value of the percentage slider.
