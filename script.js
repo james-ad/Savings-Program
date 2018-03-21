@@ -37,7 +37,7 @@ window.addEventListener('load', function() {
         let removeCheckBox = document.getElementsByClassName('remove-check');
         for(i=0; i < removeCheckBox.length; i++) {
         if (removeCheckBox[i].checked) {
-            checks.deleteRow(i);
+            removeCheckBox[i].parentNode.parentNode.remove();
         }
         console.log(checks)
     }
