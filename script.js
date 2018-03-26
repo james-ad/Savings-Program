@@ -1,7 +1,7 @@
 window.addEventListener('load', function() {
 
 // create variables to store total savings amount and an array, holding all of the checks entered so far
-    var checkAmount, checkHistory, checks, checksDeposited, clearCheckHistory, depositButton, moneySaved, percentage, removeSelectedChecks, savings, sliderReadout;
+    var checkAmount, checkHistory, checks, checksDeposited, clearCheckHistory, depositButton, moneySaved, percentage, savings, sliderReadout;
 
     checkAmount = document.getElementById('check-input');
     checkHistory = [];
@@ -11,7 +11,6 @@ window.addEventListener('load', function() {
     depositButton = document.getElementById('deposit');
     moneySaved = document.getElementById('money-saved');
     percentage = document.getElementById('percentage');
-    removeSelectedChecks = document.getElementById('remove-selected-checks');
     sliderReadout = document.getElementById('slider-readout');
     sliderReadout.innerHTML = percentage.value + ' %';
 
@@ -32,22 +31,12 @@ window.addEventListener('load', function() {
         moneySaved.innerHTML = convertPercentage(checkAmount.value).toFixed(2);
     });
 
-// Remove last entry and clear check history upon clicking appropriate buttons
-    removeSelectedChecks.addEventListener('click', function() {
-        let removeCheckBox = document.getElementsByClassName('remove-check');
-        for(i=0; i < removeCheckBox.length; i++) {
-        if (removeCheckBox[i].checked) {
-            removeCheckBox[i].parentNode.parentNode.remove();
-        }
-        console.log(checks)
-    }
-        
-        // let rowCount = checks.rows.length - 1;
-        // if (checks.rows.length > 1) {
-        // checks.deleteRow(rowCount);
-        // checkHistory.shift();
-        // console.log(checkHistory);
-        // }
+// Remove selected entry and clear check history upon clicking appropriate buttons
+    document.addEventListener('click', function(e) {
+        let target = e.target;
+        if (e.target.className == 'remove-check') {
+                target.parentNode.parentNode.remove();
+            }
     });
 
     clearCheckHistory.addEventListener('click', function() {
@@ -61,10 +50,10 @@ window.addEventListener('load', function() {
 // Add each new check deposited onto the beginning of an array  
     depositButton.addEventListener('click', depositCheck);
   
-// Update HTML with new check history
+//  Create funcitons that update HTML with new check history
     function depositCheck() {
         checkHistory.unshift(checkAmount.value);
-        checks.innerHTML += '<tr class="entry"> <td>' + checkAmount.value + '</td>' + '<td>' + convertPercentage(checkAmount.value).toFixed(2) + '</td> <td><input type="checkbox" class="remove-check"> </td></tr>';
+        checks.innerHTML += '<tr class="entry"> <td>' + checkAmount.value + '</td>' + '<td>' + convertPercentage(checkAmount.value).toFixed(2) + '</td> <td><button class="remove-check">X</button> </td></tr>';
         console.log(checkHistory);
     }
 
