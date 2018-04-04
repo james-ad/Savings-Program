@@ -6,9 +6,12 @@
     <title>Savings Calculator</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="styles.css" />
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
     <script src="script.js"></script>
 </head>
 <body>
+    <div id="wrapper">
+    <h1>Savings Calculator</h1>
 <!-- Create input for check amounts to be deposited later -->
     <input type="number" id="check-input">
     <button id="deposit">Deposit Check</button>
@@ -23,12 +26,16 @@ Also, create divs to store slider readout and percentage readout -->
     <div id="checks-deposited">
         <table id="checks">
             <tr id="heading-row">
-                <th>Check Amount</th><th>Savings</th><th class="remove-check">Remove Check</th>
+                <th>Check Amount</th><th class="percentage-column">Percentage Saved</th><th>Savings</th><th class="remove-check">Remove Check</th>
             </tr>
         </table>
     </div>
-    <button id="remove-selected-checks">Remove Selected Checks</button>
+    <button id="check-savings-total">Check Savings Total</button>
     <button id="clear-check-history">Clear Check History</button>
+
+    <!-- Create readout showing how much is in savings in total -->
+    <h2>Savings Total</h2>
+    <div id="savings-total"></div>
     </div>
 </body>
 </html>

@@ -1,8 +1,9 @@
 window.addEventListener('load', function() {
 
 // create variables to store total savings amount and an array, holding all of the checks entered so far
-    var checkAmount, checkHistory, checks, checksDeposited, clearCheckHistory, depositButton, moneySaved, percentage, savings, sliderReadout;
+    var addSavingsUp, checkAmount, checkHistory, checks, checksDeposited, clearCheckHistory, depositButton, moneySaved, percentage, savings, sliderReadout, totalSavings;
 
+    addSavingsUp = document.getElementById('check-savings-total');
     checkAmount = document.getElementById('check-input');
     checkHistory = [];
     checks = document.getElementById('checks');
@@ -11,8 +12,10 @@ window.addEventListener('load', function() {
     depositButton = document.getElementById('deposit');
     moneySaved = document.getElementById('money-saved');
     percentage = document.getElementById('percentage');
+    savings = document.getElementById('savings-total');
     sliderReadout = document.getElementById('slider-readout');
     sliderReadout.innerHTML = percentage.value + ' %';
+    totalSavings = [];
 
 // Trigger deposit button when user hits "Enter" key
     checkAmount.addEventListener('keyup', function(e) {
@@ -53,13 +56,29 @@ window.addEventListener('load', function() {
 //  Create funcitons that update HTML with new check history
     function depositCheck() {
         checkHistory.unshift(checkAmount.value);
-        checks.innerHTML += '<tr class="entry"> <td>' + checkAmount.value + '</td>' + '<td>' + convertPercentage(checkAmount.value).toFixed(2) + '</td> <td><button class="remove-check">X</button> </td></tr>';
-        console.log(checkHistory);
+        checks.innerHTML += '<tr class="entry"> <td>' + checkAmount.value + '</td>' + '<td>' + percentage.value + ' %' + '</td>' + '<td class="savings-class">' + convertPercentage(checkAmount.value).toFixed(2) + '</td> <td><button class="remove-check">X</button> </td></tr>';
+        
+        totalSavings.push(convertPercentage(checkAmount.value).toFixed(2));
+        savings.innerHTML = '';
+        savings.innerHTML = totalSavings.reduce(addSavings);
+        console.log('check collection: ' + checkHistory);
+        console.log('savings collection: ' + totalSavings);
     }
 
     function convertPercentage(n) {
         let sliderValue = percentage.value;
         return sliderValue * .01 * n;
+    }
+
+    addSavingsUp.addEventListener('click', addSavings);
+
+    let fullAmount = 0;
+    let savingsClass = document.querySelectorAll('.savings-class');
+    function addSavings() {
+        for (i=0; i < savingsClass.length; i++) {
+            fullAmount += savingsClass[i];
+            return fullAmount;
+        }
     }
 
 });
