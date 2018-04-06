@@ -1,9 +1,8 @@
 window.addEventListener('load', function() {
 
 // create variables to store total savings amount and an array, holding all of the checks entered so far
-    var addSavingsUp, checkAmount, checkHistory, checks, checksDeposited, clearCheckHistory, depositButton, moneySaved, percentage, savings, sliderReadout, totalSavings;
+    var checkAmount, checkHistory, checks, checksDeposited, clearCheckHistory, depositButton, moneySaved, percentage, savings, sliderReadout, totalSavings;
 
-    addSavingsUp = document.getElementById('check-savings-total');
     checkAmount = document.getElementById('check-input');
     checkHistory = [];
     checks = document.getElementById('checks');
@@ -39,6 +38,15 @@ window.addEventListener('load', function() {
         let target = e.target;
         if (e.target.className == 'remove-check') {
                 target.parentNode.parentNode.remove();
+                // find value in Savings category of table, remove it from the totalSavings array and update the Savings Total section of the page.
+                for (i=0; i < totalSavings.length; i++) {
+                    let rmValue = target.parentNode.previousSibling.value;
+                    if (rmValue == totalSavings[i]) {
+                        let index = totalSavings.indexOf(rmValue);
+                        totalSavings.splice(index, 1);
+                    }
+                }
+                console.log(totalSavings);
             }
     });
 
@@ -47,6 +55,7 @@ window.addEventListener('load', function() {
         checks.deleteRow(i);
         }
         checkHistory = [];
+        savings.innerHTML = '';
         console.log(checkHistory);
     });
 
@@ -58,9 +67,11 @@ window.addEventListener('load', function() {
         checkHistory.unshift(checkAmount.value);
         checks.innerHTML += '<tr class="entry"> <td>' + checkAmount.value + '</td>' + '<td>' + percentage.value + ' %' + '</td>' + '<td class="savings-class">' + convertPercentage(checkAmount.value).toFixed(2) + '</td> <td><button class="remove-check">X</button> </td></tr>';
         
-        totalSavings.push(convertPercentage(checkAmount.value).toFixed(2));
-        savings.innerHTML = '';
-        savings.innerHTML = totalSavings.reduce(addSavings);
+        totalSavings.push(Number(convertPercentage(checkAmount.value).toFixed(2)));
+        console.log(totalSavings);
+        savings.innerHTML = totalSavings.reduce(function(a, b) {
+            return a + b;
+        });
         console.log('check collection: ' + checkHistory);
         console.log('savings collection: ' + totalSavings);
     }
@@ -69,16 +80,6 @@ window.addEventListener('load', function() {
         let sliderValue = percentage.value;
         return sliderValue * .01 * n;
     }
-
-    addSavingsUp.addEventListener('click', addSavings);
-
-    let fullAmount = 0;
-    let savingsClass = document.querySelectorAll('.savings-class');
-    function addSavings() {
-        for (i=0; i < savingsClass.length; i++) {
-            fullAmount += savingsClass[i];
-            return fullAmount;
-        }
-    }
+    
 
 });
