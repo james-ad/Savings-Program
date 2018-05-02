@@ -14,28 +14,26 @@
     <h1>Savings Calculator</h1>
 <!-- Create input for check amounts to be deposited later -->
     <input type="number" id="check-input">
-    <button id="deposit">Deposit Check</button>
-    <br>
  <!-- Make a slider to adjust the percentage of the check that is to be saved.
 Also, create divs to store slider readout and percentage readout -->
     <input type="range" min="1" max="100" value="10" name="" id="percentage" class="slider">
-    <div id="slider-readout"></div>
-    <div id="money-saved"></div>
-
+    <div class="readouts" id="slider-readout"></div>
+    <div class="readouts" id="money-saved">$0.00</div>
+    
+    <button id="deposit" class="main-page-button">Deposit Check</button>
 <!-- Create a table to store checks that have been deposited so far -->
     <div id="checks-deposited">
         <table id="checks">
             <tr id="heading-row">
-                <th>Check Amount</th><th class="percentage-column">Percentage Saved</th><th>Savings</th><th class="remove-check">Remove Check</th>
+                <th>Check Amount</th><th class="percentage-column">Percentage Saved</th><th>Savings</th><th class="remove-check-heading">Remove Check</th>
             </tr>
         </table>
     </div>
-    <button id="check-savings-total">Check Savings Total</button>
-    <button id="clear-check-history">Clear Check History</button>
+    <button id="clear-check-history" class="main-page-button">Clear Check History</button>
 
     <!-- Create readout showing how much is in savings in total -->
     <h2>Savings Total</h2>
-    <div id="savings-total"></div>
+    <div class="readouts" id="savings-total">$0.00</div>
     </div>
 </body>
 </html>

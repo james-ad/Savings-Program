@@ -1,23 +1,90 @@
-table, td, th {
-    border: 1px solid black;
+input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+ 
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+table, th {
     text-align: center;
-    background: white;
+    background: rgba(255,255,255, 0.5);
+}
+
+table {
+  border-radius: 10px;
+  margin: 20px 0 5px 0;
+}
+
+th, td {
+  padding: 0 10px 0 10px;
+  border-radius: 5px;
+}
+
+td {
+  margin-right: 10px;
+}
+
+html {
+    height: 100%;
 }
 
 body {
-    background: linear-gradient(to bottom right, rgb(31, 129, 241), white);
-    background-size: auto auto;
+    background: linear-gradient(to bottom right, rgb(42, 133, 236), rgb(223, 232, 248));
+    background-size: contain;
     background-repeat: no-repeat;
-    width: 100%;
-    height: 100%;
     margin: 0;
     font-family: 'Montserrat', sans-serif;
+    min-height: 100%;
+}
+
+h1 {
+    font-size: 3em;
+    margin-top: 7%;
+}
+
+h2 {
+    font-size: 1.9em;
 }
 
 h1, h2 {
     color: white;
+    font-weight: lighter;
 }
 
 #check-input, button {
     border-radius: 20px;
+}
+
+#wrapper {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+input {
+  width: 15%;
+  padding: 5px;
+  margin: 1%;
+  text-align: center;
+}
+
+.main-page-button {
+    margin: 20px;
+    min-height: 25px;
+}
+
+.readouts {
+    font-size: 1.2em;
+}
+
+#savings-total {
+    font-size: 1.5em;
+    margin-bottom: 5%;
+}
+
+#money-saved {
+    margin: 1%;
 }
