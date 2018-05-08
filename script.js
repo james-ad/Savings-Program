@@ -30,7 +30,9 @@ window.addEventListener('load', function() {
     });
 
     checkAmount.addEventListener('input', function() {
-        moneySaved.innerHTML = '$' + convertPercentage(checkAmount.value).toFixed(2);
+        let cashReadout = convertPercentage(checkAmount.value).toFixed(2);
+        console.log(cashReadout);
+        moneySaved.innerHTML = '$' + numberWithCommas(cashReadout);
     });
 
 
@@ -42,6 +44,9 @@ window.addEventListener('load', function() {
             // find value in Savings category of table, remove it from the totalSavings array and update the Savings Total section of the page.
             for (i=0; i < totalSavings.length; i++) {
                 let rmValue = target.parentNode.previousSibling.previousSibling.innerText;
+                console.log(rmValue);
+                rmValue = rmValue.replace(/\,/g,'').replace(/\$/g, '');
+                console.log(rmValue);
                 if (rmValue == totalSavings[i]) {
                     let index = totalSavings.indexOf(rmValue);
                     totalSavings.splice(index, 1);
@@ -49,10 +54,11 @@ window.addEventListener('load', function() {
                 }
             }
             console.log(totalSavings);
-            if (totalSavings.length > 0) {
-            savings.innerHTML = '$' + totalSavings.reduce(function(a, b) {
-                return a + b;
-            }).toFixed(2)
+            if (totalSavings.length >= 0) {
+                let addEmUp = totalSavings.reduce(function(a, b) {
+                    return a + b;
+                }, 0);
+            savings.innerHTML = '$' + numberWithCommas(addEmUp.toFixed(2));
             }
         }
     });
@@ -77,9 +83,11 @@ window.addEventListener('load', function() {
         
         totalSavings.push(Number(convertPercentage(checkAmount.value).toFixed(2)));
         console.log(totalSavings);
-        savings.innerHTML = '$' + numberWithCommas(totalSavings.reduce(function(a, b) {
+        let addEmUp = totalSavings.reduce(function(a, b) {
             return a + b;
-        }).toFixed(2));
+        }, 0);
+
+        savings.innerHTML = '$' + numberWithCommas(addEmUp.toFixed(2));
         console.log('check collection: ' + checkHistory);
         console.log('savings collection: ' + totalSavings);
         console.log(checks.rows.length);
