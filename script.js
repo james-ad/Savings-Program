@@ -1,105 +1,114 @@
 window.addEventListener('load', function() {
+//MODEL    
+    let data = [];
 
-// create variables to store total savings amount and an array, holding all of the checks entered so far
-    var checkAmount, checkHistory, checks, checksDeposited, clearCheckHistory, depositButton, moneySaved, percentage, savings, sliderReadout, totalSavings;
+//GLOBAL VARIABLES
+    const checkInput = document.getElementById('check-input');
+    const clearChecksButton = document.getElementById('clear-check-history');
+    const depositButton = document.getElementById('deposit-button');
+    const slider = document.getElementById('percentage');
 
-    checkAmount = document.getElementById('check-input');
-    checkHistory = [];
-    checks = document.getElementById('checks');
-    checksDeposited = document.getElementById('checks-deposited');
-    clearCheckHistory = document.getElementById('clear-check-history');
-    depositButton = document.getElementById('deposit');
-    moneySaved = document.getElementById('money-saved');
-    percentage = document.getElementById('percentage');
-    savings = document.getElementById('savings-total');
-    sliderReadout = document.getElementById('slider-readout');
-    sliderReadout.innerHTML = percentage.value + ' %';
-    totalSavings = [];
-
-// Trigger deposit button when user hits "Enter" key
-    checkAmount.addEventListener('keyup', function(e) {
+//EVENTS
+    checkInput.addEventListener('input', renderPercentage);
+    depositButton.addEventListener('click', depositCheck);
+    slider.addEventListener('input', renderPercentage);
+    document.addEventListener('click', removeEntry);
+    
+    checkInput.addEventListener('keyup', function(e) {
         if (e.keyCode === 13) {
             depositButton.click();
         }
     });
-
-// Show savings amount when user either enters in a check amount or adjusts the savings percentage using the slider
-    percentage.addEventListener('input', function() {
-        sliderReadout.innerHTML = percentage.value + ' %';
-        moneySaved.innerHTML = '$' + convertPercentage(checkAmount.value).toFixed(2);
+    clearChecksButton.addEventListener('click', function() {
+        data = [];
+        renderTableEntry();
     });
 
-    checkAmount.addEventListener('input', function() {
-        let cashReadout = convertPercentage(checkAmount.value).toFixed(2);
-        console.log(cashReadout);
-        moneySaved.innerHTML = '$' + numberWithCommas(cashReadout);
-    });
+//FUNCTION DECLARATIONS
+    function depositCheck() {
+        if (checkInput.value > 0) {
+        const checkInput = document.getElementById('check-input').value;
+        const percentage = document.getElementById('percentage').value;
+        const savingsAmount = (checkInput * percentage * .01).toFixed(2);
 
+        data.push(
+                    {
+                        checkAmount: Number(checkInput), 
+                        percentage: Number(percentage),
+                        savingsAmount: Number(savingsAmount)
+                    }
+                );
+        renderTableEntry();
+        renderTotal();
+            } else if (checkInput.value <= 0) {
+                alert('Please enter a positive value.');
+            }
+    }
 
-// Remove selected entry and clear check history upon clicking appropriate buttons
-    document.addEventListener('click', function(e) {
+    function renderPercentage() {
+        const checkInput = document.getElementById('check-input').value;
+        const percentage = document.getElementById('percentage').value;
+        const percentageReadout = document.getElementById('percentage-readout');
+        const moneySaved = document.getElementById('money-saved');
+        const dollarAmount = '$' + (checkInput * percentage * .01).toFixed(2);
+        
+        percentageReadout.innerHTML = percentage + '%';
+        moneySaved.innerHTML = numberWithCommas(dollarAmount);
+    }
+
+    function renderTotal() {
+        const addUpSavings = data.reduce(function(a, b) {
+            return a + b.checkAmount * b.percentage * .01;
+        }, 0);
+        
+        const savings = document.getElementById('savings-total');
+        savings.innerHTML = '$' + numberWithCommas(addUpSavings.toFixed(2));
+    }
+    
+    function renderTableEntry() {
+        let output = '';
+        for (let entry of data) {
+            const checkAmount = entry.checkAmount;
+            const percentage = entry.percentage;
+            const amountSaved = convertPercentage(checkAmount, percentage).toFixed(2);
+            
+            output += `<tr class="entry"><td>$${numberWithCommas(checkAmount)}</td>
+            <td>${percentage}%</td>
+            <td class="savings-class">$${numberWithCommas(amountSaved)}</td>
+            <td><button class="remove-check-button">X</button></td></tr>`;
+        }
+        
+        let checksTable = document.getElementById('tableBody');
+        checksTable.innerHTML = output;
+    }
+
+    function removeEntry(e) {
         let target = e.target;
-        if (target.className === 'remove-check') {
+        if (target.className === 'remove-check-button') {
             target.parentNode.parentNode.remove();
-            // find value in Savings category of table, remove it from the totalSavings array and update the Savings Total section of the page.
-            for (i=0; i < totalSavings.length; i++) {
+            // Find value in Savings category of table, remove it from the data array and update the Savings Total section of the page.
+            for (let entry of data) {
                 let rmValue = target.parentNode.previousSibling.previousSibling.innerText;
-                console.log(rmValue);
                 rmValue = rmValue.replace(/\,/g,'').replace(/\$/g, '');
-                console.log(rmValue);
-                if (rmValue == totalSavings[i]) {
-                    let index = totalSavings.indexOf(rmValue);
-                    totalSavings.splice(index, 1);
+                
+                if (rmValue == entry.savingsAmount) {
+                    let index = data.indexOf(rmValue);
+                    data.splice(index, 1);
                     break;
                 }
             }
-            console.log(totalSavings);
-            if (totalSavings.length >= 0) {
-                let addEmUp = totalSavings.reduce(function(a, b) {
-                    return a + b;
-                }, 0);
-            savings.innerHTML = '$' + numberWithCommas(addEmUp.toFixed(2));
-            }
         }
-    });
-
-    clearCheckHistory.addEventListener('click', function() {
-        for (i = checks.rows.length - 1; i > 0; i--) {
-        checks.deleteRow(i);
-        }
-        checkHistory = [];
-        savings.innerHTML = '$0.00';
-        console.log(checkHistory);
-        console.log(checks.rows.length);
-    });
-
-// Add each new check deposited onto the beginning of an array  
-    depositButton.addEventListener('click', depositCheck);
-  
-//  Create funcitons that update HTML with new check history
-    function depositCheck() {
-        checkHistory.unshift(checkAmount.value);
-        checks.innerHTML += '<tr class="entry"> <td>' + '$' + numberWithCommas(checkAmount.value) + '</td>' + '<td>' + percentage.value + ' %' + '</td>' + '<td class="savings-class">' + '$' + numberWithCommas(convertPercentage(checkAmount.value).toFixed(2)) + '</td> <td><button class="remove-check">X</button> </td></tr>';
-        
-        totalSavings.push(Number(convertPercentage(checkAmount.value).toFixed(2)));
-        console.log(totalSavings);
-        let addEmUp = totalSavings.reduce(function(a, b) {
-            return a + b;
-        }, 0);
-
-        savings.innerHTML = '$' + numberWithCommas(addEmUp.toFixed(2));
-        console.log('check collection: ' + checkHistory);
-        console.log('savings collection: ' + totalSavings);
-        console.log(checks.rows.length);
-    }
-
-    function convertPercentage(n) {
-        let sliderValue = percentage.value;
-        return sliderValue * .01 * n;
-    }
+        renderTotal();
+    };
     
-    const numberWithCommas = (x) => {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-
 });
+
+
+// Create functions to calculate check percentage and add commas to numbers
+const numberWithCommas = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+function convertPercentage(n, percentageValue) {
+    return percentageValue * .01 * n;
+}
