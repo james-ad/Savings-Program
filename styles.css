@@ -94,6 +94,10 @@ letter-spacing: 1px
     color: white;
 }
 
+.remove-check-button:hover {
+    background: linear-gradient(to bottom right, #3c8eed, #cadcf6);
+}
+
 #savings-total {
     font-size: 1.5em;
     margin-bottom: 10px;
