@@ -2,7 +2,7 @@ window.addEventListener('load', function() {
 //MODEL    
     let data = [];
 
-//GLOBAL VARIABLES
+//VARIABLES
     const checkInput = document.getElementById('check-input');
     const clearChecksButton = document.getElementById('clear-check-history');
     const depositButton = document.getElementById('deposit-button');
@@ -23,6 +23,9 @@ window.addEventListener('load', function() {
         data = [];
         renderTableEntry();
     });
+    
+    renderTableEntry();
+    renderPercentage();
 
 //FUNCTION DECLARATIONS
     function depositCheck() {
@@ -99,14 +102,7 @@ window.addEventListener('load', function() {
             }
         }
         renderTotal();
-    };
-
-    window.addEventListener('resize', function() {
-        let htmlPage = document.getElementById('htmlPage');
-        console.log(htmlPage);
-        htmlPage.style.minHeight='100%';
-    });
-    
+    }
 });
 
 
